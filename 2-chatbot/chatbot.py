@@ -39,8 +39,8 @@ while True:
         else:
             print(f"{user_in.capitalize()} is a pretty good food, but I like {bot_food}")
     elif question == 2:
-        print(f"Yes")
-    elif question == 3:
         print(f"Nice")
+    elif question == 3:
+        print(f"Yes")
 
     print("")
