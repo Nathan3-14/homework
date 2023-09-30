@@ -27,15 +27,16 @@ while True:
     user_in = input(">> ")
     if user_in == "quit":
         break
+
     if question == 0:
         print(f"I'm feeling {user_in.lower()} too")
     elif question == 1:
-        bot_food = foods[random.randint(0, len(foods))]
+        bot_food = foods[random.randint(0, len(foods)-1)]
         if user_in.lower() == bot_food.lower():
             print(f"I like {user_in.lower()} too!")
         else:
             print(f"{user_in.capitalize()} is a pretty good food, but I like {bot_food}")
     elif question == 2:
         print(f"Yes")
-    
+
     print("")
