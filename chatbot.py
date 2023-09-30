@@ -14,7 +14,8 @@ print("CHATBOT\n  Type 'quit' to exit\n")
 questions = { 
     0: "How are you doing today?",
     1: "What's your favorite food?",
-    2: "Yes?"
+    2: "What's the weather like?",
+    3: "Yes?"
 }
 foods = [
     "pizza",
@@ -30,6 +31,7 @@ while True:
 
     if question == 0:
         print(f"I'm feeling {user_in.lower()} too")
+    #
     elif question == 1:
         bot_food = foods[random.randint(0, len(foods)-1)]
         if user_in.lower() == bot_food.lower():
@@ -38,5 +40,7 @@ while True:
             print(f"{user_in.capitalize()} is a pretty good food, but I like {bot_food}")
     elif question == 2:
         print(f"Yes")
+    elif question == 3:
+        print(f"Nice")
 
     print("")
