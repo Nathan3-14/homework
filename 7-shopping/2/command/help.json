@@ -1,0 +1,24 @@
+{
+	"main": {
+		"add": {
+			"usage": "add <item>",
+			"description": "Used to add an item to the shopping list"
+		},
+		"remove": {
+			"usage": "remove <item>",
+			"description": "Used to remove an item from the shopping list"
+		},
+		"view": {
+			"usage": "view",
+			"description": "Used to display the shopping list"
+		},
+		"help": {
+			"usage": "help (function)",
+			"description": "Used to get help about a function or the program"
+		},
+		"exit": {
+			"usage": "exit",
+			"description": "Used to exit the program"
+		}
+	}
+}
