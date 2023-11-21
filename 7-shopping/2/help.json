@@ -1,0 +1,24 @@
+{
+	"main": {
+		"quit": {
+			"description": "Quits the program",
+			"usage": "quit"
+		},
+		"help": {
+			"description": "Get help about a function or the program",
+			"usage": "help (function)"
+		},
+        "add": {
+         	"description": "Adds an item to the list",
+        	"usage": "add <item>"
+        },
+        "remove": {
+            "description": "Removes an item from the list",
+            "usage": "remove <item>"
+        },
+        "view": {
+            "description": "Displays the list",
+            "usage": "view"
+        }
+	}
+}
