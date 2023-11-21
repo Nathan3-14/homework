@@ -4,13 +4,14 @@ from rich import print
 from rich.prompt import Confirm
 import os
 
+
+
 def function_add(args: list):
     if len(args) != 1:
         return False
     current_list.append(args[0])
     return True
     
-
 def function_remove(args: list):
     if len(args) != 1:
         return False
@@ -26,13 +27,15 @@ def function_view(args: list):
     print(current_list)
     return True
 
+
+
 command_dict = {
     "add": function_add,
     "remove": function_remove,
     "view": function_view
 }
 
-interpreter = CommandReader("./command/help.json", command_dict)
+interpreter = CommandReader("./help.json", command_dict)
 current_list = []
 
 if Confirm.ask("Clear the terminal before running?"):
