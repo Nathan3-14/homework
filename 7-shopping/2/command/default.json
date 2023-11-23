@@ -8,9 +8,9 @@
 			"description": "Get help about a function or the program",
 			"usage": "help (function)"
 		},
-        	"template": {
-           		 "description": "template",
-            		"usage": "template <required> (optional) <req1 | req2>"
-        	}
+		"template": {
+			"description": "template",
+			"usage": "template <required> (optional) <req1 | req2>"
+		}
 	}
 }
