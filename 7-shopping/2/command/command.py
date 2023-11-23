@@ -1,6 +1,9 @@
 import os
+import platform
 import json
 from rich import print
+from rich.prompt import Confirm
+
 
 class CommandReader:
     def __init__(self, command_path: str, command_dict: list):
@@ -47,3 +50,15 @@ class CommandReader:
         if len(args) > 0:
             return False
         quit()
+
+class CommandLine:
+    def __init__(self, interpreter: CommandReader):
+        self.interpreter = interpreter
+        if Confirm.ask("Clear the terminal before running?"):
+            os.system("clear")
+    
+    def prompt(self):
+        print(f"[green]user@{platform.node()}[/green] [blue]$[/blue] ", end="")
+        self.response = input("")
+        self.response_split = self.response.split(" ")
+        self.interpreter.run(self.response_split[0], self.response_split[1:len(self.response_split)])
