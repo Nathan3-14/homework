@@ -25,7 +25,7 @@ file.write("Hello World!")
 file.close()
 ```
 
-## Apending to a file
+## Appending to a file
 Open the file in "a" mode (append) and run .write(\<string\>) with \<string\> being what you want to append.
 ```python
 file = open("test.txt", "a")
