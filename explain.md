@@ -18,7 +18,8 @@ file.close()
 ```
 
 ## Writing to a file
-Open the file in "w" mode (overwrite) and run .write(\<string\>) with \<string\> being what you want to write
+Open the file in "w" mode (overwrite) and run .write(\<string\>) with \<string\> being what you want to write  
+Opening in "w" creates the file.
 ```python
 file = open("test.txt", "w")
 file.write("Hello World!")
