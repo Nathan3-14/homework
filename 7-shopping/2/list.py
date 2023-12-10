@@ -1,4 +1,4 @@
-from command.command import CommandReader
+from command.command import CommandReader, CommandLine
 import platform
 from rich import print
 from rich.prompt import Confirm
@@ -36,6 +36,7 @@ command_dict = {
 }
 
 interpreter = CommandReader("./help.json", command_dict)
+command_line = CommandLine(interpreter)
 current_list = []
 
 if Confirm.ask("Clear the terminal before running?"):
