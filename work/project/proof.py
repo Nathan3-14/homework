@@ -2,11 +2,14 @@ import sys
 import time
 import keyboard
 
+def is_position(char: chr, pos_list: list) -> bool:
+    return char in pos_list
+
 def display_map() -> None:
     for line in map:
         output = ""
         for char in line:
-            if char.isdigit():
+            if is_position(char, ["a"]):
                 if int(char) == player_index:
                     output += "@"
                 else:
@@ -20,19 +23,24 @@ def clear_lines(count: int = 1) -> None:
     sys.stdout.write("\033[K")
 
 
+
 def move_up():
-    current_position = map.index(player_index)
-    target_position = current_position - len(map[0])
-    player_index = target_position
+    pass
+    #!
+    # global player_index
+    # current_position = 0
+    # target_position = current_position - len(map[0])
+    # player_index = target_position
+    #!
 
 
 map = [
-    "#####",
-    "#012#",
-    "#345#",
-    "#####"
+    "##########",
+    "abc##jklmn",
+    "#defghi###",
+    "##########"
 ]
-player_index = 0
+player_index = 3
 
 display_map()
 keyboard.add_hotkey("w", move_up)
