@@ -42,8 +42,8 @@ def display_map() -> None:
         pass
     finally:
         if do_fancy_tiles:
-            for tile in fancy_tiles:
-                main_output.replace()
+            for key, tile in fancy_tiles.items():
+                main_output = main_output.replace(key, tile)
         print(main_output)
 
 
@@ -107,13 +107,14 @@ def finish():
 
 # ⛶ 🞃🞂🞁🞀
 
-fancy_tiles_2 = {
+fancy_tiles = {
     "#": "\u25FC",  # ? Wall
-    "@": "\u26F6",  # ? Player
+    "@": "\u26F6",  # ? Player25AB
+    "~": "\u26CB",   # ? End tile
     "v": "\u23F7",  # ? Down arrow
     "^": "\u23F6",  # ? Up arrow
     ">": "\u23F5",  # ? Right arrow
-    "<": "\u23F4",  # ? Left arrow
+    "<": "\u23F4",  # ? Left arrow,
 }
 do_fancy_tiles = False
 
@@ -150,9 +151,16 @@ keyboard.add_hotkey("d", move_player, (1, 0))
 keyboard.add_hotkey("esc", finish)
 
 
+
+option = input("Fancy tiles? y/n\n>> ")
+if option.lower() == "y":
+    do_fancy_tiles = True
+#TODO Add print new screen no erase option
+
 print("\n" * len(current_map["map"]))
+
 while running:
-    display_map()
+    display_map() #TODO params here?
     while not action: pass
     action = False
 print(end_message)
