@@ -1,25 +1,34 @@
 import sys
 import time
 import keyboard
+import os
 
 
-def is_position(char: chr, pos_list: list) -> bool:
-    return char in pos_list
+def write_error(error: Exception) -> None:
+    if not os.path.exists("errors.log"):
+        a = open("errors.log", "w")
+        a.close()
+    
+    with open("errors.log", "a") as f:
+        f.write(f"{error}\n")
 
 
 def display_map() -> None:
-    clear_lines(len(map))
+    global map
+    global current_map
+
+    clear_lines(len(current_map["map"]))
     try:
         main_output = ""
-        for y_index, line in enumerate(map):
+        for y_index, line in enumerate(current_map["map"]): #* Goes through each horizontal line in the map
             output = ""
-            for x_index, char in enumerate(line):
-                if x_index == player_positon[0] and y_index == player_positon[1]:
+            for x_index, char in enumerate(line): #* Goes through each character in the line
+                if x_index == player_positon[0] and y_index == player_positon[1]: #* Checks for the players position being the current position
                     output += "@"
                 else:
                     output += char
             main_output += output + "\n"
-        main_output = main_output.strip()
+        main_output = main_output.strip() #* Removes the extra \n at the end of the output
     except:
         pass
     finally:
@@ -34,6 +43,9 @@ def clear_lines(count: int = 1) -> None:
 
 def move_player(x: int, y: int) -> list:
     global player_positon
+    global current_map
+    global map
+    global end_message
 
     player_vector = [x, y]
     old_player_positon = player_positon.copy()
@@ -43,11 +55,31 @@ def move_player(x: int, y: int) -> list:
     player_positon[1] += player_vector[1]
 
     #* Checks if the players next position is a wall
-    #TODO Add try excpet for this
-    if map[player_positon[1]][player_positon[0]] == "#":
-        #* Resets the players position
-        player_positon = old_player_positon
+    try:
+        current_tile = current_map["map"][player_positon[1]][player_positon[0]]
 
+        if current_tile == "#": #? Wall tile
+            #* Resets the players position
+            player_positon = old_player_positon
+        
+        if current_tile == ">": #? Right door tile
+            try:
+                current_map = maps[current_map["right"]] #* Moves map right
+                player_positon = current_map["from"]["left"].copy() #* Gets starting position
+            except Exception as e:
+                write_error(e)
+        if current_tile == "<": #? Left door tile
+            try:
+                current_map = maps[current_map["left"]] #* Moves map left
+                player_positon = current_map["from"]["right"].copy() #* Gets starting position
+            except Exception as e:
+                write_error(e)
+        if current_tile == "~": #? End tile
+            end_message = "You won!"
+            finish()
+    except Exception as e: #* Checks if the player is off the map
+        write_error(e)
+        player_positon = old_player_positon
 
 
 def finish():
@@ -55,16 +87,42 @@ def finish():
     running = False
 
 
-map = [
-    "##########",  # ?  0,0 -> 9,0
-    "#  ##    #",  # ?  0,1 -> 9,1
-    "##     ###",  # ?  0,2 -> 9,2
-    "##########",  # ?  0,3 -> 9,3
+
+map_1 = [
+    "##########",  #?  0,0 -> 9,0
+    "#  ##    >",
+    "##     ###",
+    "##########",  #?  0,3 -> 9,3
 ]
-player_start_positon = [2, 2]
+map_2 = [
+    "#######",     #?  0,0 -> 7,0
+    "<   #~#",
+    "##    #",
+    "#######",     #?  0,3 -> 7,3
+]
+maps = {
+    "1": {
+        "map": map_1,
+        "from": {
+            "right": [8, 1]
+        },
+        "right": "2"
+    },
+    "2": {
+        "map": map_2,
+        "from": {
+            "left": [1, 1]
+        },
+        "left": "1"
+    }
+}
+
+current_map = maps["1"]
+player_start_positon = [2, 2] # ?  x, y (0 indexed)
 player_positon = player_start_positon
-# ?  x, y (0 indexed)
+
 running = True
+end_message = ""
 
 keyboard.add_hotkey("w", move_player, (0, -1))
 keyboard.add_hotkey("s", move_player, (0, 1))
@@ -73,7 +131,9 @@ keyboard.add_hotkey("d", move_player, (1, 0))
 keyboard.add_hotkey("esc", finish)
 
 
-print("\n" * len(map))
+print("\n" * len(current_map["map"]))
 while running:
     display_map()
     pass
+print(end_message)
+input(  "Here's all of your moves!\n  (Press enter to continue and exit)\n")
