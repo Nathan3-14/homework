@@ -1,6 +1,5 @@
-from tkinter import *
-
-root = Tk()
-test = Label(text="hi!")
-test.pack()
-root.mainloop()
+while True:
+    print("code")
+    print("stuff", end=" ")
+    line_count = input()
+    print("\n"*32)
