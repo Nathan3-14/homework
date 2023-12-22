@@ -13,12 +13,15 @@ def write_error(error: Exception) -> None:
         f.write(f"{error}\n")
 
 
-def display_map() -> None:
+def display_map(clear: bool = True) -> None:
     global map
     global current_map
     global fancy_tiles
 
-    clear_lines(len(current_map["map"]))
+    if clear:
+        clear_lines(len(current_map["map"]))
+    else:
+        print("\n"*2)
     try:
         main_output = ""
         for y_index, line in enumerate(
@@ -109,8 +112,8 @@ def finish():
 
 fancy_tiles = {
     "#": "\u25FC",  # ? Wall
-    "@": "\u26F6",  # ? Player25AB
-    "~": "\u26CB",   # ? End tile
+    "@": "\u26F6",  # ? Player
+    "~": "\u25FB",  # ? End tile
     "v": "\u23F7",  # ? Down arrow
     "^": "\u23F6",  # ? Up arrow
     ">": "\u23F5",  # ? Right arrow
@@ -151,17 +154,19 @@ keyboard.add_hotkey("d", move_player, (1, 0))
 keyboard.add_hotkey("esc", finish)
 
 
-
 option = input("Fancy tiles? y/n\n>> ")
 if option.lower() == "y":
     do_fancy_tiles = True
-#TODO Add print new screen no erase option
+option = input("Erase each time? y/n\n>> ")
+do_clear = option.lower() == "y"
+# TODO Add print new screen no erase option
 
 print("\n" * len(current_map["map"]))
 
 while running:
-    display_map() #TODO params here?
-    while not action: pass
+    display_map(do_clear)  # TODO params here?
+    while not action:
+        pass
     action = False
 print(end_message)
 input("Here's all of your moves!\n  (Press enter to continue and exit)\n")
