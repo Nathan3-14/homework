@@ -159,12 +159,11 @@ if option.lower() == "y":
     do_fancy_tiles = True
 option = input("Erase each time? y/n\n>> ")
 do_clear = option.lower() == "y"
-# TODO Add print new screen no erase option
 
 print("\n" * len(current_map["map"]))
 
 while running:
-    display_map(do_clear)  # TODO params here?
+    display_map(do_clear)
     while not action:
         pass
     action = False
