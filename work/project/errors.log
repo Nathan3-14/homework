@@ -7,3 +7,4 @@ string index out of range
 !!NOT ERROR!! - [9, 1]
 !!NOT ERROR!! - [8, 1]
 !!NOT ERROR!! - [8, 1]
+list index out of range

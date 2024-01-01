@@ -96,6 +96,26 @@ def move_player(x: int, y: int) -> list:
                 ].copy()  # * Gets starting position
             except Exception as e:
                 write_error(e)
+        
+        if current_tile == "v":  # ? Down door tile
+            try:
+                current_map = maps[current_map["down"]]  # * Moves map left
+                player_positon = current_map["from"][
+                    "up"
+                ].copy()  # * Gets starting position
+            except Exception as e:
+                write_error(e)
+        
+        if current_tile == "^":  # ? Left door tile
+            try:
+                current_map = maps[current_map["up"]]  # * Moves map left
+                player_positon = current_map["from"][
+                    "down"
+                ].copy()  # * Gets starting position
+            except Exception as e:
+                write_error(e)
+        
+        
         if current_tile == "~":  # ? End tile
             end_message = "You won!"
             finish()
@@ -112,6 +132,7 @@ def finish():
 
 # ⛶ 🞃🞂🞁🞀
 
+default_tile = "\u25CD"
 fancy_tiles = {
     "#": "\u25FC",  # ? Wall
     "@": "\u26F6",  # ? Player
@@ -119,7 +140,9 @@ fancy_tiles = {
     "v": "\u23F7",  # ? Down arrow
     "^": "\u23F6",  # ? Up arrow
     ">": "\u23F5",  # ? Right arrow
-    "<": "\u23F4",  # ? Left arrow,
+    "<": "\u23F4",  # ? Left arrow
+    "+": default_tile,  # ? Key
+    "=": default_tile,  # ? Lock
 }
 do_fancy_tiles = False
 
@@ -133,12 +156,39 @@ map_1 = [
 map_2 = [
     "#######",  # ?  0,0 -> 7,0
     "<   #~#",
-    "##    #",
-    "#######",  # ?  0,3 -> 7,3
+    "##   =#",
+    "##v####",  # ?  0,3 -> 7,3
+]
+map_3 = [
+    "##^##",  # ? 0,0 -> 4,0
+    "#  ##",
+    "## +#",
+    "#####"   # ? 0,3 -> 4,3
 ]
 maps = {
-    "1": {"map": map_1, "from": {"right": [8, 1]}, "right": "2"},
-    "2": {"map": map_2, "from": {"left": [1, 1]}, "left": "1"},
+    "1": {
+        "map": map_1,
+        "from": {
+            "right": [8, 1]
+            },
+        "right": "2"
+    },
+    "2": {
+        "map": map_2,
+        "from": {
+            "left": [1, 1],
+            "down": [2, 2]
+            },
+        "left": "1",
+        "down": "3"
+    },
+    "3": {
+        "map": map_3,
+        "from": {
+            "up": [2, 1]
+            },
+        "up": "2"
+    }
 }
 
 current_map = maps["1"]
