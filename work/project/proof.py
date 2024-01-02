@@ -190,6 +190,32 @@ maps = {
         "up": "2"
     }
 }
+new_maps = {
+    "1": {
+        "map": map_1,
+        "doors": {
+            [9, 1]: ["right", "2", [1, 1]], #? door_pos: [door_direction, new_map, new_player_pos]
+        }
+    },
+    "2": {
+        "map": map_2,
+        "doors": {
+            [0, 1]: ["left", "1", [8, 1]],
+            [2, 3]: ["down", "3", [2, 1]]
+        },
+        "from": {
+            "left": [1, 1], #!
+            "down": [2, 2]
+            },
+    },
+    "3": {
+        "map": map_3,
+        "doors": {
+            [2, 1]: ["up", "2", [2, 2]]
+        }
+    }
+}
+
 
 current_map = maps["1"]
 player_start_positon = [2, 2]  # ?  x, y (0 indexed)
