@@ -80,40 +80,44 @@ def move_player(x: int, y: int) -> list:
             # * Resets the players position
             player_positon = old_player_positon
 
-        if current_tile == ">":  # ? Right door tile
-            try:
-                current_map = maps[current_map["right"]]  # * Moves map right
-                player_positon = current_map["from"][
-                    "left"
-                ].copy()  # * Gets starting position
-            except Exception as e:
-                write_error(e)
-        if current_tile == "<":  # ? Left door tile
-            try:
-                current_map = maps[current_map["left"]]  # * Moves map left
-                player_positon = current_map["from"][
-                    "right"
-                ].copy()  # * Gets starting position
-            except Exception as e:
-                write_error(e)
+        # if current_tile == ">":  # ? Right door tile
+        #     try:
+        #         current_map = maps[current_map["right"]]  # * Moves map right
+        #         player_positon = current_map["from"][
+        #             "left"
+        #         ].copy()  # * Gets starting position
+        #     except Exception as e:
+        #         write_error(e)
+        # if current_tile == "<":  # ? Left door tile
+        #     try:
+        #         current_map = maps[current_map["left"]]  # * Moves map left
+        #         player_positon = current_map["from"][
+        #             "right"
+        #         ].copy()  # * Gets starting position
+        #     except Exception as e:
+        #         write_error(e)
         
-        if current_tile == "v":  # ? Down door tile
-            try:
-                current_map = maps[current_map["down"]]  # * Moves map left
-                player_positon = current_map["from"][
-                    "up"
-                ].copy()  # * Gets starting position
-            except Exception as e:
-                write_error(e)
+        # if current_tile == "v":  # ? Down door tile
+        #     try:
+        #         current_map = maps[current_map["down"]]  # * Moves map left
+        #         player_positon = current_map["from"][
+        #             "up"
+        #         ].copy()  # * Gets starting position
+        #     except Exception as e:
+        #         write_error(e)
         
-        if current_tile == "^":  # ? Left door tile
-            try:
-                current_map = maps[current_map["up"]]  # * Moves map left
-                player_positon = current_map["from"][
-                    "down"
-                ].copy()  # * Gets starting position
-            except Exception as e:
-                write_error(e)
+        # if current_tile == "^":  # ? Left door tile
+        #     try:
+        #         current_map = maps[current_map["up"]]  # * Moves map left
+        #         player_positon = current_map["from"][
+        #             "down"
+        #         ].copy()  # * Gets starting position
+        #     except Exception as e:
+        #         write_error(e)
+
+        new_door_check()
+            
+            
         
         
         if current_tile == "~":  # ? End tile
@@ -123,6 +127,15 @@ def move_player(x: int, y: int) -> list:
     except Exception as e:  # * Checks if the player is off the map
         write_error(e)
         player_positon = old_player_positon
+
+def new_door_check():
+    door_position = [] #? Placeholder
+    door_data = [] #? Placeholder
+    for tdoor_position, tdoor_data in current_map["doors"].items():
+        if player_positon == tdoor_position:
+            door_position, door_data = tdoor_position, tdoor_data
+    player_positon = door_data[2] #? New player position
+    current_map = new_maps[door_data[1]]
 
 
 def finish():
