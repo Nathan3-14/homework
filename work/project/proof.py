@@ -65,6 +65,7 @@ def move_player(x: int, y: int) -> list:
     global map
     global end_message
     global action
+    global inventory
 
     player_vector = [x, y]
     old_player_positon = player_positon.copy()
@@ -84,6 +85,13 @@ def move_player(x: int, y: int) -> list:
         if current_tile == "~":  # ? End tile
             end_message = "You won!"
             finish()
+        
+        if current_tile == "+": # ? Key tile
+            inventory.append("key")
+        
+        if current_tile == "=": # ? Lock tile
+            if "key" not in inventory:
+                player_positon = old_player_positon
 
         door_check()
 
@@ -137,11 +145,12 @@ map_2 = [
     "##v####",  # ?  0,3 -> 7,3
 ]
 map_3 = [
-    "##^##",  # ? 0,0 -> 4,0
+    "##∧##",  # ? 0,0 -> 4,0
     "#  ##",
     "## +#",
     "#####"   # ? 0,3 -> 4,3
 ]
+
 
 maps = {
     "1": {
@@ -157,7 +166,7 @@ maps = {
             (2, 3): ["down", "3", [2, 1]]
         },
         "from": {
-            "left": [1, 1], #!
+            "left": [1, 1],
             "down": [2, 2]
             },
     },
@@ -173,6 +182,7 @@ maps = {
 current_map = maps["1"]
 player_start_positon = [2, 2]  # ?  x, y (0 indexed)
 player_positon = player_start_positon
+inventory = []
 
 running = True
 action = False
