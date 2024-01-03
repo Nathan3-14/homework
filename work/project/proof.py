@@ -129,7 +129,6 @@ def finish():
     running = False
 
 
-# ⛶ 🞃🞂🞁🞀
 
 default_tile = "\u25CD"
 fancy_tiles = {
