@@ -59,6 +59,7 @@ def clear_lines(count: int = 1) -> None:
 
 
 def move_player(x: int, y: int) -> list:
+    # print(f"Player moving {x},{y}") #! DEBUG
     global player_positon
     global current_map
     global map
@@ -79,63 +80,26 @@ def move_player(x: int, y: int) -> list:
         if current_tile == "#":  # ? Wall tile
             # * Resets the players position
             player_positon = old_player_positon
-
-        # if current_tile == ">":  # ? Right door tile
-        #     try:
-        #         current_map = maps[current_map["right"]]  # * Moves map right
-        #         player_positon = current_map["from"][
-        #             "left"
-        #         ].copy()  # * Gets starting position
-        #     except Exception as e:
-        #         write_error(e)
-        # if current_tile == "<":  # ? Left door tile
-        #     try:
-        #         current_map = maps[current_map["left"]]  # * Moves map left
-        #         player_positon = current_map["from"][
-        #             "right"
-        #         ].copy()  # * Gets starting position
-        #     except Exception as e:
-        #         write_error(e)
-        
-        # if current_tile == "v":  # ? Down door tile
-        #     try:
-        #         current_map = maps[current_map["down"]]  # * Moves map left
-        #         player_positon = current_map["from"][
-        #             "up"
-        #         ].copy()  # * Gets starting position
-        #     except Exception as e:
-        #         write_error(e)
-        
-        # if current_tile == "^":  # ? Left door tile
-        #     try:
-        #         current_map = maps[current_map["up"]]  # * Moves map left
-        #         player_positon = current_map["from"][
-        #             "down"
-        #         ].copy()  # * Gets starting position
-        #     except Exception as e:
-        #         write_error(e)
-
-        new_door_check()
-            
-            
-        
         
         if current_tile == "~":  # ? End tile
             end_message = "You won!"
             finish()
+
+        door_check()
+
         action = True
     except Exception as e:  # * Checks if the player is off the map
-        write_error(e)
+        write_error(f"{e.__context__} : {e}")
         player_positon = old_player_positon
 
-def new_door_check():
-    door_position = [] #? Placeholder
-    door_data = [] #? Placeholder
-    for tdoor_position, tdoor_data in current_map["doors"].items():
-        if player_positon == tdoor_position:
-            door_position, door_data = tdoor_position, tdoor_data
-    player_positon = door_data[2] #? New player position
-    current_map = new_maps[door_data[1]]
+def door_check():
+    global player_positon
+    global current_map
+
+    for door_position, door_data in current_map["doors"].items(): #* Iterates through all doors in the current room
+        if tuple(player_positon) == door_position:
+            player_positon = door_data[2].copy() #? New player position
+            current_map = maps[door_data[1]].copy()
 
 
 def finish():
@@ -178,43 +142,19 @@ map_3 = [
     "## +#",
     "#####"   # ? 0,3 -> 4,3
 ]
+
 maps = {
     "1": {
         "map": map_1,
-        "from": {
-            "right": [8, 1]
-            },
-        "right": "2"
-    },
-    "2": {
-        "map": map_2,
-        "from": {
-            "left": [1, 1],
-            "down": [2, 2]
-            },
-        "left": "1",
-        "down": "3"
-    },
-    "3": {
-        "map": map_3,
-        "from": {
-            "up": [2, 1]
-            },
-        "up": "2"
-    }
-}
-new_maps = {
-    "1": {
-        "map": map_1,
         "doors": {
-            [9, 1]: ["right", "2", [1, 1]], #? door_pos: [door_direction, new_map, new_player_pos]
+            (9, 1): ["right", "2", [1, 1]], #? door_pos: [door_direction, new_map, new_player_pos]
         }
     },
     "2": {
         "map": map_2,
         "doors": {
-            [0, 1]: ["left", "1", [8, 1]],
-            [2, 3]: ["down", "3", [2, 1]]
+            (0, 1): ["left", "1", [8, 1]],
+            (2, 3): ["down", "3", [2, 1]]
         },
         "from": {
             "left": [1, 1], #!
@@ -224,7 +164,7 @@ new_maps = {
     "3": {
         "map": map_3,
         "doors": {
-            [2, 1]: ["up", "2", [2, 2]]
+            (2, 0): ["up", "2", [2, 2]]
         }
     }
 }
