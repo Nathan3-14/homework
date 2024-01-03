@@ -19,11 +19,12 @@ def display_map(clear: bool = True) -> None:
     global map
     global current_map
     global fancy_tiles
+    global inventory
 
     if clear:
-        clear_lines(len(current_map["map"]))
+        clear_lines(len(current_map["map"]) + 1)
     else:
-        print("\n"*2)
+        print("\n"*3)
     try:
         main_output = ""
         for y_index, line in enumerate(
@@ -49,8 +50,14 @@ def display_map(clear: bool = True) -> None:
         if do_fancy_tiles:
             for key, tile in fancy_tiles.items():
                 main_output = main_output.replace(key, tile)
+        inventory_output = f"Inventory: {inventory}"
+        print(inventory_output)
         print(main_output)
 
+def replace_char_at_index(text: str, replace: str, index: int) -> str:
+    to_return = list(text)
+    to_return[index] = replace
+    return("".join(to_return))
 
 def clear_lines(count: int = 1) -> None:
     for _ in range(count):
@@ -88,10 +95,17 @@ def move_player(x: int, y: int) -> list:
         
         if current_tile == "+": # ? Key tile
             inventory.append("key")
+            current_map["map"][player_positon[1]] = replace_char_at_index(current_map["map"][player_positon[1]], " ", player_positon[0]) #* Replaces the key's location with a blank character
+
         
         if current_tile == "=": # ? Lock tile
-            if "key" not in inventory:
+            if "key" in inventory:
+                inventory.remove("key")
+                current_map["map"][player_positon[1]] = replace_char_at_index(current_map["map"][player_positon[1]], " ", player_positon[0]) #* Replaces the lock's location with a blank character
+            else:
                 player_positon = old_player_positon
+                
+
 
         door_check()
 
