@@ -20,9 +20,10 @@ def display_map(clear: bool = True) -> None:
     global current_map
     global fancy_tiles
     global inventory
+    global bonus_message
 
     if clear:
-        clear_lines(len(current_map["map"]) + 1)
+        clear_lines(len(current_map["map"]) + 2)
     else:
         print("\n"*3)
     try:
@@ -51,8 +52,10 @@ def display_map(clear: bool = True) -> None:
             for key, tile in fancy_tiles.items():
                 main_output = main_output.replace(key, tile)
         inventory_output = f"Inventory: {inventory}"
+        print(bonus_message)
         print(inventory_output)
         print(main_output)
+        bonus_message = ""
 
 def replace_char_at_index(text: str, replace: str, index: int) -> str:
     to_return = list(text)
@@ -73,6 +76,7 @@ def move_player(x: int, y: int) -> list:
     global end_message
     global action
     global inventory
+    global bonus_message
 
     player_vector = [x, y]
     old_player_positon = player_positon.copy()
@@ -94,6 +98,7 @@ def move_player(x: int, y: int) -> list:
             finish()
         
         if current_tile == "+": # ? Key tile
+            bonus_message = "You got a key!"
             inventory.append("key")
             current_map["map"][player_positon[1]] = replace_char_at_index(current_map["map"][player_positon[1]], " ", player_positon[0]) #* Replaces the key's location with a blank character
 
@@ -103,6 +108,7 @@ def move_player(x: int, y: int) -> list:
                 inventory.remove("key")
                 current_map["map"][player_positon[1]] = replace_char_at_index(current_map["map"][player_positon[1]], " ", player_positon[0]) #* Replaces the lock's location with a blank character
             else:
+                bonus_message = "You need a key"
                 player_positon = old_player_positon
                 
 
@@ -130,6 +136,7 @@ def finish():
 
 
 
+bonus_message = ""
 default_tile = "\u25CD"
 fancy_tiles = {
     "#": "\u25FC",  # ? Wall
