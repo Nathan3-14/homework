@@ -6,29 +6,30 @@ import keyboard
 import os
 
 class Game:
-    def __init__(self):
-        self.player_positon = ""
-        self.current_map = ""
-        self.map = ""
+    def __init__(self, maps):
+        self.player_start_positon = [2, 2]  # ?  x, y (0 indexed)
+        self.player_positon = self.player_start_positon
+        self.current_map = maps["1"]
+        self.running = True
         self.end_message = ""
-        self.action = ""
-        self.inventory = ""
+        self.action = False
+        self.inventory = []
         self.bonus_message = ""
 
 
 
-    def write_error(self, error: Exception) -> None:
+    def write_error(self, function: callable, error: Exception) -> None:
         if not os.path.exists("errors.log"):
             a = open("errors.log", "w")
             a.close()
 
         with open("errors.log", "a") as f:
-            f.write(f"{error}\n")
+            f.write(f"{function}: {error}\n")
 
 
     def display_map(self, clear: bool = True) -> None:
         if clear:
-            self.clear_lines(len(current_map["map"]) + 2)
+            self.clear_lines(len(self.current_map["map"]) + 2)
         else:
             print("\n"*3)
         try:
@@ -50,24 +51,24 @@ class Game:
             self.main_output = (
                 self.main_output.strip()
             )  # * Removes the extra \n at the end of the output
-        except:
-            pass
+        except Exception as e:
+            self.write_error(self.display_map, e)
         finally:
             if do_fancy_tiles:
                 for key, tile in fancy_tiles.items():
-                    main_output = main_output.replace(key, tile)
-            self.inventory_output = f"Inventory: {inventory}"
+                    self.main_output = self.main_output.replace(key, tile)
+            self.inventory_output = f"Inventory: {self.inventory}"
             print(self.bonus_message)
             print(self.inventory_output)
             print(self.main_output)
             self.bonus_message = ""
 
     def replace_char_at_index(self, text: str, replace: str, index: int) -> str:
-        to_return = list(text)
-        to_return[index] = replace
-        return("".join(to_return))
+        self.to_return = list(text)
+        self.to_return[index] = replace
+        return("".join(self.to_return))
 
-    def clear_lines(count: int = 1) -> None:
+    def clear_lines(self, count: int = 1) -> None:
         for _ in range(count):
             sys.stdout.write("\033[F")
             sys.stdout.write("\033[K")
@@ -75,69 +76,57 @@ class Game:
 
     def move_player(self, x: int, y: int) -> list:
         # print(f"Player moving {x},{y}") #! DEBUG
-        global player_positon
-        global current_map
-        global map
-        global end_message
-        global action
-        global inventory
-        global bonus_message
 
-        player_vector = [x, y]
-        old_player_positon = player_positon.copy()
+        self.player_vector = [x, y]
+        self.old_player_positon = self.player_positon.copy()
 
         # * Adds the player_vector to the current player position
-        player_positon[0] += player_vector[0]
-        player_positon[1] += player_vector[1]
+        self.player_positon[0] += self.player_vector[0]
+        self.player_positon[1] += self.player_vector[1]
 
         # * Checks if the players next position is a wall
         try:
-            current_tile = current_map["map"][player_positon[1]][player_positon[0]]
+            self.current_tile = self.current_map["map"][self.player_positon[1]][self.player_positon[0]]
 
-            if current_tile == "#":  # ? Wall tile
+            if self.current_tile == "#":  # ? Wall tile
                 # * Resets the players position
-                player_positon = old_player_positon
+                self.player_positon = self.old_player_positon
             
-            if current_tile == "~":  # ? End tile
-                end_message = "You won!"
+            if self.current_tile == "~":  # ? End tile
+                self.end_message = "You won!"
                 self.finish()
             
-            if current_tile == "+": # ? Key tile
-                bonus_message = "You got a key!"
-                inventory.append("key")
-                current_map["map"][player_positon[1]] = self.replace_char_at_index(current_map["map"][player_positon[1]], " ", player_positon[0]) #* Replaces the key's location with a blank character
+            if self.current_tile == "+": # ? Key tile
+                self.bonus_message = "You got a key!"
+                self.inventory.append("key")
+                self.current_map["map"][self.player_positon[1]] = self.replace_char_at_index(self.current_map["map"][self.player_positon[1]], " ", self.player_positon[0]) #* Replaces the key's location with a blank character
 
             
-            if current_tile == "=": # ? Lock tile
-                if "key" in inventory:
-                    inventory.remove("key")
-                    current_map["map"][player_positon[1]] = self.replace_char_at_index(current_map["map"][player_positon[1]], " ", player_positon[0]) #* Replaces the lock's location with a blank character
+            if self.current_tile == "=": # ? Lock tile
+                if "key" in self.inventory:
+                    self.inventory.remove("key")
+                    self.current_map["map"][self.player_positon[1]] = self.replace_char_at_index(self.current_map["map"][self.player_positon[1]], " ", self.player_positon[0]) #* Replaces the lock's location with a blank character
                 else:
-                    bonus_message = "You need a key"
-                    player_positon = old_player_positon
+                    self.bonus_message = "You need a key"
+                    self.player_positon = self.old_player_positon
                     
 
 
             self.door_check()
-
-            action = True
+            self.action = True
         except Exception as e:  # * Checks if the player is off the map
-            self.write_error(f"{e.__context__} : {e}")
-            player_positon = old_player_positon
+            self.write_error(self.move_player, f"{e.__context__} : {e}")
+            self.player_positon = self.old_player_positon
 
     def door_check(self):
-        global player_positon
-        global current_map
-
-        for door_position, door_data in current_map["doors"].items(): #* Iterates through all doors in the current room
-            if tuple(player_positon) == door_position:
-                player_positon = door_data[2].copy() #? New player position
-                current_map = maps[door_data[1]].copy()
+        for door_position, door_data in self.current_map["doors"].items(): #* Iterates through all doors in the current room
+            if tuple(self.player_positon) == door_position:
+                self.player_positon = door_data[2].copy() #? New player position
+                self.current_map = maps[door_data[1]].copy()
 
 
     def finish(self):
-        global running
-        running = False
+        self.running = False
 
 
 
@@ -204,16 +193,6 @@ maps = {
 }
 
 
-current_map = maps["1"]
-player_start_positon = [2, 2]  # ?  x, y (0 indexed)
-player_positon = player_start_positon
-inventory = []
-
-running = True
-action = False
-end_message = ""
-
-
 
 
 option = input("Fancy tiles? y/n\n>> ")
@@ -222,8 +201,8 @@ if option.lower() == "y":
 option = input("Erase each time? y/n\n>> ")
 do_clear = option.lower() == "y"
 
-game = Game()
-print("\n" * len(current_map["map"]))
+game = Game(maps)
+print("\n" * len(game.current_map["map"]))
 
 keyboard.add_hotkey("w", game.move_player, (0, -1))
 keyboard.add_hotkey("s", game.move_player, (0, 1))
@@ -231,10 +210,10 @@ keyboard.add_hotkey("a", game.move_player, (-1, 0))
 keyboard.add_hotkey("d", game.move_player, (1, 0))
 keyboard.add_hotkey("esc", game.finish)
 
-while running:
+while game.running:
     game.display_map(do_clear)
-    while not action:
+    while not game.action:
         pass
-    action = False
-print(end_message)
+    game.action = False
+print(game.end_message)
 input("Here's all of your moves!\n  (Press enter to continue and exit)\n")
