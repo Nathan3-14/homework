@@ -27,34 +27,28 @@ class Game:
 
 
     def display_map(self, clear: bool = True) -> None:
-        global map
-        global current_map
-        global fancy_tiles
-        global inventory
-        global bonus_message
-
         if clear:
             self.clear_lines(len(current_map["map"]) + 2)
         else:
             print("\n"*3)
         try:
-            main_output = ""
+            self.main_output = ""
             for y_index, line in enumerate(
-                current_map["map"]
+                self.current_map["map"]
             ):  # * Goes through each horizontal line in the map
-                output = ""
+                self.output = ""
                 for x_index, char in enumerate(
                     line
                 ):  # * Goes through each character in the line
                     if (
-                        x_index == player_positon[0] and y_index == player_positon[1]
+                        x_index == self.player_positon[0] and y_index == self.player_positon[1]
                     ):  # * Checks for the players position being the current position
-                        output += "@"
+                        self.output += "@"
                     else:
-                        output += char
-                main_output += output + "\n"
-            main_output = (
-                main_output.strip()
+                        self.output += char
+                self.main_output += self.output + "\n"
+            self.main_output = (
+                self.main_output.strip()
             )  # * Removes the extra \n at the end of the output
         except:
             pass
@@ -62,11 +56,11 @@ class Game:
             if do_fancy_tiles:
                 for key, tile in fancy_tiles.items():
                     main_output = main_output.replace(key, tile)
-            inventory_output = f"Inventory: {inventory}"
-            print(bonus_message)
-            print(inventory_output)
-            print(main_output)
-            bonus_message = ""
+            self.inventory_output = f"Inventory: {inventory}"
+            print(self.bonus_message)
+            print(self.inventory_output)
+            print(self.main_output)
+            self.bonus_message = ""
 
     def replace_char_at_index(self, text: str, replace: str, index: int) -> str:
         to_return = list(text)
