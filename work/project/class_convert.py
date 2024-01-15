@@ -4,6 +4,7 @@ import sys
 import time
 import keyboard
 import os
+from useful_classes.Auth.auth import Auth
 
 class Game:
     def __init__(self, maps):
@@ -128,6 +129,11 @@ class Game:
     def finish(self):
         self.running = False
 
+
+auth = Auth(json_path="./login.json")
+user = auth.login(input("Enter your username\n>> "), input("Enter your password\n>> "))
+if not user[0]:
+    quit()
 
 
 bonus_message = ""
