@@ -23,6 +23,7 @@
 
 ## 22/1/24
 ```diff
- = Improve inventory system
- = Add Chests
+ - Improve inventory system
+ - Add Chests
 ```
+Add new item which gives loot when moving onto it
