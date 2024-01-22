@@ -1,1 +1,2 @@
 Pyrebase==3.0.26
+keyboard==0.13.5
