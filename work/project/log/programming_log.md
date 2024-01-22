@@ -20,3 +20,9 @@
 ```diff
 + Plan tests
 ```
+
+## 22/1/24
+```diff
+ = Improve inventory system
+ = Add Chests
+```
