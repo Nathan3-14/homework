@@ -1,5 +1,8 @@
 import json
+from os import error
 import random
+
+
 
 def display_list(in_list: list):
     to_return = ""
@@ -7,7 +10,23 @@ def display_list(in_list: list):
         to_return += f"{item} "
     return to_return
 
+def error_quit():
+        print("Incorrect username or password")
+        quit()
+
 def main():
+    users = {
+        "nathan": "password"
+    }
+    
+    user_in = input("Enter username ")
+    pass_in = input("Enter password ")
+
+    if user_in not in users.keys():
+        error_quit()
+    if users[user_in] == pass_in:
+        error_quit()
+
     with open("songs.json", "r") as f:
         data = json.load(f)
         data.pop("Artist")
