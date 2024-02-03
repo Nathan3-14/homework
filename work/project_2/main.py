@@ -1,6 +1,5 @@
 import json
 import random
-import useful_classes.Auth.auth_json
 
 def display_list(in_list: list):
     to_return = ""
