@@ -4,7 +4,7 @@ import sys
 import time
 import keyboard
 import os
-from useful_classes.Auth.auth import Auth
+from useful_classes.Auth.auth_json import Auth
 
 class Game:
     def __init__(self, maps):
