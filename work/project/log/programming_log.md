@@ -27,3 +27,15 @@
  - Add Chests
 ```
 Add new item which gives loot when moving onto it
+
+## 9/2/24
+```diff
+ + Added login tests
+ - Improve inventory system
+ - Add chests
+```
+
+## 11/2/24
+```diff
+
+```
