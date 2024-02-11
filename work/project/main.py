@@ -4,7 +4,7 @@ import sys
 import time
 import keyboard
 import os
-from useful_classes.Auth.auth_json import Auth
+from auth import Auth
 
 class Game:
     def __init__(self, maps):
@@ -19,7 +19,7 @@ class Game:
 
 
 
-    def write_error(self, function: callable, error: Exception) -> None:
+    def write_error(self, function, error: Exception) -> None:
         if not os.path.exists("errors.log"):
             a = open("errors.log", "w")
             a.close()
@@ -75,7 +75,7 @@ class Game:
             sys.stdout.write("\033[K")
 
 
-    def move_player(self, x: int, y: int) -> list:
+    def move_player(self, x: int, y: int) -> None:
         # print(f"Player moving {x},{y}") #! DEBUG
 
         self.player_vector = [x, y]
@@ -110,6 +110,10 @@ class Game:
                 else:
                     self.bonus_message = "You need a key"
                     self.player_positon = self.old_player_positon
+            
+            if self.current_tile == "*": # ? Chest tile
+                self.inventory.append("Gold")
+                self.current_map["map"][self.player_positon[1]] = self.replace_char_at_index(self.current_map["map"][self.player_positon[1]], " ", self.player_positon[0]) #* Replaces the chests's location with a blank character
                     
 
 
@@ -131,8 +135,8 @@ class Game:
 
 
 auth = Auth(json_path="./login.json")
-user = auth.login(input("Enter your username\n>> "), input("Enter your password\n>> "))
-if not user[0]:
+user = auth.check_user(input("Enter your username\n>> "), input("Enter your password\n>> "))
+if not user:
     quit()
 
 
@@ -148,6 +152,7 @@ fancy_tiles = {
     "<": "\u23F4",  # ? Left arrow
     "+": default_tile,  # ? Key
     "=": default_tile,  # ? Lock
+    "*": default_tile,  # ? Chest
 }
 do_fancy_tiles = False
 
@@ -166,7 +171,7 @@ map_2 = [
 ]
 map_3 = [
     "##∧##",  # ? 0,0 -> 4,0
-    "#  ##",
+    "#* ##",
     "## +#",
     "#####"   # ? 0,3 -> 4,3
 ]
