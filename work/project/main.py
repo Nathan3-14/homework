@@ -3,6 +3,7 @@
 import sys
 import time
 import keyboard
+import random
 import os
 from auth import Auth
 
@@ -112,7 +113,13 @@ class Game:
                     self.player_positon = self.old_player_positon
             
             if self.current_tile == "*": # ? Chest tile
-                self.inventory.append("Gold")
+                self.loot = [("gold", (2, 3)), ("key", (1))]
+
+                self.loot_type = random.choice(self.loot)
+                self.inventory.append(
+                    self.loot_type[0]
+                )
+
                 self.current_map["map"][self.player_positon[1]] = self.replace_char_at_index(self.current_map["map"][self.player_positon[1]], " ", self.player_positon[0]) #* Replaces the chests's location with a blank character
                     
 
