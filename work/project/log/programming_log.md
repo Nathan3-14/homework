@@ -26,4 +26,9 @@
  - Improve inventory system
  - Add Chests
 ```
-Add new item which gives loot when moving onto it
+
+## 19/2/24
+```
+ + Improve inventory system
+ - Add Chests
+```

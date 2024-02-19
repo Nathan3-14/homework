@@ -2,9 +2,13 @@
 
 import sys
 import time
+from typing import Callable
 import keyboard
 import os
-from useful_classes.Auth.auth_json import Auth
+
+from random import randint
+from auth import Auth
+from inventory import Inventory
 
 class Game:
     def __init__(self, maps):
@@ -14,12 +18,12 @@ class Game:
         self.running = True
         self.end_message = ""
         self.action = False
-        self.inventory = []
+        self.inventory = Inventory()
         self.bonus_message = ""
 
 
 
-    def write_error(self, function: callable, error: Exception) -> None:
+    def write_error(self, function: Callable, error: Exception) -> None:
         if not os.path.exists("errors.log"):
             a = open("errors.log", "w")
             a.close()
@@ -75,7 +79,7 @@ class Game:
             sys.stdout.write("\033[K")
 
 
-    def move_player(self, x: int, y: int) -> list:
+    def move_player(self, x: int, y: int) -> None:
         # print(f"Player moving {x},{y}") #! DEBUG
 
         self.player_vector = [x, y]
@@ -99,17 +103,19 @@ class Game:
             
             if self.current_tile == "+": # ? Key tile
                 self.bonus_message = "You got a key!"
-                self.inventory.append("key")
+                self.inventory.add_item("key", 1)
                 self.current_map["map"][self.player_positon[1]] = self.replace_char_at_index(self.current_map["map"][self.player_positon[1]], " ", self.player_positon[0]) #* Replaces the key's location with a blank character
 
             
             if self.current_tile == "=": # ? Lock tile
-                if "key" in self.inventory:
-                    self.inventory.remove("key")
+                if self.inventory.use_item("key", 1):
                     self.current_map["map"][self.player_positon[1]] = self.replace_char_at_index(self.current_map["map"][self.player_positon[1]], " ", self.player_positon[0]) #* Replaces the lock's location with a blank character
                 else:
                     self.bonus_message = "You need a key"
-                    self.player_positon = self.old_player_positon
+                    self.player_positon = self.old_player_positon # * Roll back players position
+            
+            if self.current_tile == "*": # ? Chest tile
+                self.inventory.add_item("gold", randint(1, 3))
                     
 
 
@@ -130,9 +136,9 @@ class Game:
         self.running = False
 
 
-auth = Auth(json_path="./login.json")
-user = auth.login(input("Enter your username\n>> "), input("Enter your password\n>> "))
-if not user[0]:
+auth = Auth("./login.json")
+user = auth.check_user(input("Enter your username\n>> "), input("Enter your password\n>> "))
+if not user:
     quit()
 
 
@@ -148,6 +154,7 @@ fancy_tiles = {
     "<": "\u23F4",  # ? Left arrow
     "+": default_tile,  # ? Key
     "=": default_tile,  # ? Lock
+    "*": default_tile, # ? Chest
 }
 do_fancy_tiles = False
 
@@ -166,7 +173,7 @@ map_2 = [
 ]
 map_3 = [
     "##∧##",  # ? 0,0 -> 4,0
-    "#  ##",
+    "#* ##",
     "## +#",
     "#####"   # ? 0,3 -> 4,3
 ]
