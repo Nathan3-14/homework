@@ -47,16 +47,18 @@ class Inventory:
             self.storage[item] += amount
         else:
             self.storage[item] = amount
-        print(f"  DEBUG: {self.storage}")
+        # print(f"  DEBUG: {self.storage}") #! DEBUG
     
     def gain_loot(self, loot_table: LootTable, count: int) -> None:
         self.storage = combine_dicts(self.storage, loot_table.get_item(count))
-        print(f"  DEBUG: {self.storage}")
+        # print(f"  DEBUG: {self.storage}") #! DEBUG
     
     def use_item(self, item: str, amount: int) -> bool:
         if item in self.storage.keys():
             if self.storage[item] >= amount:
                 self.storage[item] -= amount
+                if self.storage[item] == 0:
+                    self.storage.pop(item)
                 return True
             else:
                 return False
