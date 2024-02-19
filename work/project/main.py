@@ -4,11 +4,14 @@ import sys
 import time
 from typing import Callable
 import keyboard
+import random
 import os
+
 
 from random import randint
 from auth import Auth
 from inventory import Inventory
+
 
 class Game:
     def __init__(self, maps):
@@ -116,6 +119,7 @@ class Game:
             
             if self.current_tile == "*": # ? Chest tile
                 self.inventory.add_item("gold", randint(1, 3))
+
                     
 
 
