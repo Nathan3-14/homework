@@ -50,9 +50,9 @@ class Inventory:
     
     def add_item(self, item: str, amount: int) -> None:
         if item in self.storage.keys():
-            self.storage[item] += amount
+            self.storage[item] += amount #* Adds item count if key exists
         else:
-            self.storage[item] = amount
+            self.storage[item] = amount #* Creates the item key if it doesn't exist
         # print(f"  DEBUG: {self.storage}") #! DEBUG
     
     def gain_loot(self, loot_table: LootTable, roll_count: int) -> None:
@@ -61,10 +61,10 @@ class Inventory:
     
     def use_item(self, item: str, amount: int) -> bool:
         if item in self.storage.keys():
-            if self.storage[item] >= amount:
-                self.storage[item] -= amount
+            if self.storage[item] >= amount: #* Checks if there are enough items in storage to use the items
+                self.storage[item] -= amount #* Subtracts the amount of the item from the total
                 if self.storage[item] == 0:
-                    self.storage.pop(item)
+                    self.storage.pop(item) #* Removes the item if the amount is zero
                 return True
             else:
                 return False
@@ -72,6 +72,7 @@ class Inventory:
             return False
     
     def __str__(self) -> str:
+        #* Dislays the inventory nicely
         converted = f""
         for item, amount in self.storage.items():
             converted += f"{amount} {item}, "
