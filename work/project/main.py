@@ -10,7 +10,7 @@ import os
 
 from random import randint
 from auth import Auth
-from inventory import Inventory
+from inventory import Inventory, LootTable
 
 
 class Game:
@@ -23,6 +23,16 @@ class Game:
         self.action = False
         self.inventory = Inventory()
         self.bonus_message = ""
+        self.chest_loot_table = LootTable(
+            {
+                "gold": (
+                    (1, 3), 2
+                    ),
+                "key": (
+                    (1, 1), 1
+                    )
+            }
+        )
 
 
 
@@ -118,7 +128,7 @@ class Game:
                     self.player_positon = self.old_player_positon # * Roll back players position
             
             if self.current_tile == "*": # ? Chest tile
-                self.inventory.add_item("gold", randint(1, 3))
+                self.inventory.gain_loot(self.chest_loot_table, 1)
 
                     
 
@@ -156,9 +166,9 @@ fancy_tiles = {
     "^": "\u23F6",  # ? Up arrow
     ">": "\u23F5",  # ? Right arrow
     "<": "\u23F4",  # ? Left arrow
-    "+": default_tile,  # ? Key
+    "+": "🗝",      # ? Key
     "=": default_tile,  # ? Lock
-    "*": default_tile, # ? Chest
+    "*": default_tile,  # ? Chest
 }
 do_fancy_tiles = False
 
