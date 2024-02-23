@@ -1,4 +1,5 @@
 from random import choice, randint
+from typing import Dict, List, Tuple
 
 def combine_dicts(dict_1: dict, dict_2: dict) -> dict:
     def add_if_exists(in_dict: dict, target_dict: dict) -> None:
@@ -16,14 +17,19 @@ def combine_dicts(dict_1: dict, dict_2: dict) -> dict:
     
     return to_return
     
+storage_type = Dict[
+    str, Tuple[                 # name: data
+        Tuple[int, int], int    # minimum value, weigth
+    ]
+]
 
 class LootTable:
-    def __init__(self, storage: dict) -> None:
+    def __init__(self, storage: storage_type) -> None:
         self.storage = storage
         # ? Format:
         # {
-        #    "name": [("min", "max"), "weight"]
-        #*   "gold": [(1, 3), 1]
+        #    "name": (("min", "max"), "weight")
+        #*   "gold": ((1, 3), 1)
         # }
     
     def get_item(self, count: int=1) -> dict:
@@ -49,8 +55,8 @@ class Inventory:
             self.storage[item] = amount
         # print(f"  DEBUG: {self.storage}") #! DEBUG
     
-    def gain_loot(self, loot_table: LootTable, count: int) -> None:
-        self.storage = combine_dicts(self.storage, loot_table.get_item(count))
+    def gain_loot(self, loot_table: LootTable, roll_count: int) -> None:
+        self.storage = combine_dicts(self.storage, loot_table.get_item(roll_count))
         # print(f"  DEBUG: {self.storage}") #! DEBUG
     
     def use_item(self, item: str, amount: int) -> bool:
@@ -76,8 +82,8 @@ class Inventory:
 if __name__ == "__main__":
     t_inv = Inventory()
     t_table = LootTable({
-        "gold": [(1, 3), 2],
-        "key": [(1, 1), 1]
+        "gold": ((1, 3), 2),
+        "key": ((1, 1), 1)
     })
 
     t_inv.add_item("gold", 2)
