@@ -158,7 +158,7 @@ if not user:
 
 bonus_message = ""
 default_tile = "\u25CD"
-fancy_tiles = {. 
+fancy_tiles = {
     "#": "\u25FC",  # ? Wall
     "@": "\u26F6",  # ? Player
     "~": "\u25FB",  # ? End tile
