@@ -9,8 +9,8 @@ import os
 
 
 from random import randint
-from auth import Auth
-from inventory import Inventory, LootTable
+from classes.auth import Auth
+from classes.inventory import Inventory, LootTable
 
 
 class Game:
@@ -158,7 +158,7 @@ if not user:
 
 bonus_message = ""
 default_tile = "\u25CD"
-fancy_tiles = {
+fancy_tiles = {. 
     "#": "\u25FC",  # ? Wall
     "@": "\u26F6",  # ? Player
     "~": "\u25FB",  # ? End tile

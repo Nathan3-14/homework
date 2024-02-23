@@ -50,4 +50,5 @@ Add new item which gives loot when moving onto it
 ## 23/2/24
 ```diff
 + Add Chests
++ Added comments to inventory file
 ```
