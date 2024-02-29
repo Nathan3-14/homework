@@ -148,11 +148,11 @@ class Game:
     def finish(self):
         self.running = False
 
-
-auth = Auth("./login.json")
-user = auth.check_user(input("Enter your username\n>> "), input("Enter your password\n>> "))
-if not user:
-    quit()
+if "-t" not in sys.argv:
+    auth = Auth("./login.json")
+    user = auth.check_user(input("Enter your username\n>> "), input("Enter your password\n>> "))
+    if not user:
+        quit()
 
 
 bonus_message = ""
@@ -220,12 +220,15 @@ maps = {
 
 
 
-
-option = input("Fancy tiles? y/n\n>> ")
-if option.lower() == "y":
-    do_fancy_tiles = True
-option = input("Erase each time? y/n\n>> ")
-do_clear = option.lower() == "y"
+if "-t" not in sys.argv:
+    option = input("Fancy tiles? y/n\n>> ")
+    if option.lower() == "y":
+        do_fancy_tiles = True
+    option = input("Erase each time? y/n\n>> ")
+    do_clear = option.lower() == "y"
+else:
+    option = "n"
+    do_clear = True
 
 game = Game(maps)
 print("\n" * len(game.current_map["map"]))

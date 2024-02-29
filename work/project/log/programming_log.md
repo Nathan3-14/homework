@@ -58,5 +58,6 @@ Add new item which gives loot when moving onto it
 + Fixed chests
 + Added chest bonus message
 + Changed chest loot table
++ Added testing (-t) flag to run with correct settings
 - Performed tests
 ```
