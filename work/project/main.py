@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import time
 from typing import Callable
 import keyboard
-import random
 import os
 
 
-from random import randint
 from classes.auth import Auth
 from classes.inventory import Inventory, LootTable
 
@@ -26,7 +23,7 @@ class Game:
         self.chest_loot_table = LootTable(
             {
                 "gold": (
-                    (1, 3), 2
+                    (1, 3), 1
                     ),
                 "key": (
                     (1, 1), 1
@@ -128,7 +125,9 @@ class Game:
                     self.player_positon = self.old_player_positon # * Roll back players position
             
             if self.current_tile == "*": # ? Chest tile
+                self.current_map["map"][self.player_positon[1]] = self.replace_char_at_index(self.current_map["map"][self.player_positon[1]], " ", self.player_positon[0])
                 self.inventory.gain_loot(self.chest_loot_table, 1)
+                self.bonus_message = "You opened a chest!"
 
                     
 

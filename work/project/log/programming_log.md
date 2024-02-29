@@ -52,3 +52,11 @@ Add new item which gives loot when moving onto it
 + Add Chests
 + Added comments to inventory file
 ```
+
+## 29/2/24
+```diff
++ Fixed chests
++ Added chest bonus message
++ Changed chest loot table
+- Performed tests
+```
