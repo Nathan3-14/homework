@@ -61,3 +61,9 @@ Add new item which gives loot when moving onto it
 + Added testing (-t) flag to run with correct settings
 - Performed tests
 ```
+
+## 4/3/24
+```diff
++ Almost complete programming report
+- Perfom tests
+```
