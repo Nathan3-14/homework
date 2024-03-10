@@ -1,5 +1,5 @@
-from typing import Any, Dict, Tuple, List
-from icecream import ic
+from typing import Any, Tuple
+
 
 def get_input(message: str, data_type: Any, num_range: Tuple[int, int]=(0,0)):
     output = None
@@ -14,19 +14,18 @@ def get_input(message: str, data_type: Any, num_range: Tuple[int, int]=(0,0)):
     
     return output
 
-def get_factors(number: int, factors: Dict[int, List[int]], max_recursion: int=5):
-    max_recursion -= 1
-    get_factors(0, {}, max_recursion)
 
-range_list: List[int] = list(range(1, 11))
 factors = {
-    key: [
-        i for i in range_list
-        if key % i == 0
-    ]
-    for key in range_list
+    1: [1],
+    2: [2],
+    3: [3],
+    4: [2, 2],
+    5: [5],
+    6: [3, 2],
+    7: [7],
+    8: [2, 2, 2],
+    9: [3, 3],
+    10: [5, 2]
 }
-print(factors)
-_input: int = get_input("Enter a number between 1 and 10\n>> ", int, (1, 10))
 
-
+print(factors[get_input("Enter a number between 1 and 10\n>> ", int, (1, 10))])
