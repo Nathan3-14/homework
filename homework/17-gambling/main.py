@@ -11,13 +11,13 @@ def erase(count: int=1) -> None:
 
 def true() -> bool:
     return True
-CustomType = TypeVar('CustomType')
+AnyType = TypeVar('AnyType')
 def fancy_input(
         message: str,
-        _type: Type[CustomType],
+        _type: Type[AnyType],
         options: List[Any]=[],
         caps_sensitive: bool=False
-    ) -> CustomType:
+    ) -> AnyType:
 
     def no_option_condition(_option) -> bool: 
         try:
