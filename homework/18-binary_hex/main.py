@@ -84,11 +84,27 @@ def hex_to_denary(_hex: str) -> int:
     return to_return
 
 if __name__ == "__main__":
-    print(f"1011   -> denary = {binary_to_denary("1011")}")
-    print(f"11     -> binary = {denary_to_binary(11)}")
-    print("")
-    print(f"101001 -> hex    = {binary_to_hex("101001")}")
-    print(f"29     -> binary = {hex_to_binary("29")}")
-    print("")
-    print(f"35     -> hex    = {denary_to_hex(35)}")
-    print(f"23     -> denary = {hex_to_denary("23")}")
+    # print(f"1011   -> denary = {binary_to_denary("1011")}")
+    # print(f"11     -> binary = {denary_to_binary(11)}")
+    # print("")
+    # print(f"101001 -> hex    = {binary_to_hex("101001")}")
+    # print(f"29     -> binary = {hex_to_binary("29")}")
+    # print("")
+    # print(f"35     -> hex    = {denary_to_hex(35)}")
+    # print(f"23     -> denary = {hex_to_denary("23")}")
+
+
+    num = input("Enter a number\n>> ")
+    base = input("Enter its base\n>> ")
+    match base:
+        case "binary":
+            print(f"{num} in denary is {binary_to_denary(num)}")
+            print(f"{num} in hexadecimal is {binary_to_hex(num)}")
+        case "denary":
+            print(f"{num} in binary is {denary_to_binary(int(num))}")
+            print(f"{num} in hexadecimal is {denary_to_hex(int(num))}")
+        case "hex":
+            print(f"{num} in binary is {hex_to_binary(num)}")
+            print(f"{num} in denary is {hex_to_denary(num)}")
+        case _:
+            print(f"Base '{base}' is not recognised, please enter one of 'hex', 'denary', 'binary'")
